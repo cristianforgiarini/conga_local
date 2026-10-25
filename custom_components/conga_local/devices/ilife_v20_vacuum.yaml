@@ -1,0 +1,892 @@
+name: Robot vacuum
+products:
+  - id: mphbe14dfodk8cz2
+    manufacturer: ILIFE
+    model: V20
+entities:
+  - entity: vacuum
+    dps:
+      - id: 1
+        type: boolean
+        name: activate
+        optional: true
+        mapping:
+          - dps_val: false
+            constraint: pause
+            conditions:
+              - dps_val: true
+                value: false
+              - dps_val: false
+                value: false
+                hidden: true
+              - dps_val: null
+                value: false
+                hidden: true
+          - dps_val: true
+            constraint: pause
+            conditions:
+              - dps_val: false
+                value: true
+              - dps_val: true
+                value: true
+                hidden: true
+              - dps_val: null
+                value: true
+                hidden: true
+          - dps_val: null
+            value: false
+            hidden: true
+      - id: 2
+        type: boolean
+        optional: true
+        name: pause
+        hidden: true
+
+      - id: 4
+        type: string
+        name: command
+        optional: true
+        mapping:
+          - dps_val: smart
+            value: smart
+          - dps_val: goto_charge
+            value: returning
+          - dps_val: return_to_base
+            value: returning
+          - dps_val: zone
+            value: zone
+          - dps_val: pose
+            value: clean_spot
+          - dps_val: part
+            value: partial
+          - dps_val: select_room
+            value: select_room
+      - id: 5
+        type: string
+        name: status
+        mapping:
+          - dps_val: standby
+            value: docked
+          - dps_val: sleep
+            value: docked
+          - dps_val: charging
+            value: docked
+          - dps_val: charge_done
+            value: docked
+          - dps_val: charged
+            value: docked
+          - dps_val: smart
+            value: cleaning
+          - dps_val: zone_clean
+            value: cleaning
+          - dps_val: part_clean
+            value: cleaning
+          - dps_val: cleaning
+            value: cleaning
+          - dps_val: paused
+            value: paused
+          - dps_val: goto_pos
+            value: cleaning
+          - dps_val: pos_arrived
+            value: cleaning
+          - dps_val: pos_unarrive
+            value: cleaning
+          - dps_val: goto_charge
+            value: returning
+          - dps_val: select_room
+            value: cleaning
+          - dps_val: selecting_room
+            value: cleaning
+          - dps_val: seek_dust_bucket
+            value: returning
+          - dps_val: collecting_dust
+            value: docked
+          - dps_val: in_trouble
+            value: error
+          - dps_val: shutdown
+            value: docked
+          - dps_val: self_clean
+            value: cleaning
+          - dps_val: mapping
+            value: cleaning
+          - dps_val: mapping_done
+            value: docked
+          - dps_val: in_positioning
+            value: cleaning
+      - id: 9
+        type: string
+        name: fan_speed
+        mapping:
+          - dps_val: closed
+            value: "Off"
+          - dps_val: close
+            value: "Off"
+          - dps_val: gentle
+            value: Low
+          - dps_val: normal
+            value: Medium
+          - dps_val: strong
+            value: High
+          - dps_val: max
+            value: Max
+      - id: 11
+        type: boolean
+        name: locate
+        optional: true
+      - id: 12
+        type: string
+        name: direction_control
+        optional: true
+        mapping:
+          - dps_val: forward
+            value: forward
+          - dps_val: not_use
+            value: not use
+          - dps_val: turn_left
+            value: left
+          - dps_val: turn_right
+            value: right
+          - dps_val: stop
+            value: stop
+          - dps_val: exit
+            value: exit
+      - id: 14
+        type: string
+        optional: true
+        name: path_data
+      - id: 28
+        type: bitfield
+        name: error
+        hidden: true
+        # Se ignora el bit 21 (2097152, "no molestar" en tu perfil) para que la
+        # aspiradora no pase a "error" con el modo no molestar activado.
+        mask: "FFDFFFFF"
+      - id: 28
+        type: bitfield
+        optional: true
+        name: fault_description
+        mapping:
+          - dps_val: 0
+            value: "OK"
+          - dps_val: 1
+            value: low_power
+          - dps_val: 2
+            value: poweroff
+          - dps_val: 4
+            value: wheel_trap
+          - dps_val: 8
+            value: cannot_upgrade
+          - dps_val: 16
+            value: collision_stuck
+          - dps_val: 32
+            value: dust_station_full
+          - dps_val: 64
+            value: tile_error
+          - dps_val: 128
+            value: lidar_speed_err
+          - dps_val: 256
+            value: lidar_cover
+          - dps_val: 512
+            value: lidar_point_err
+          - dps_val: 1024
+            value: front_wall_dirty
+          - dps_val: 2048
+            value: psd_dirty
+          - dps_val: 4096
+            value: middle_sweep
+          - dps_val: 8192
+            value: side_sweep
+          - dps_val: 16384
+            value: fan_speed
+          - dps_val: 32768
+            value: dustbox_out
+          - dps_val: 65536
+            value: dustbox_full
+          - dps_val: 131072
+            value: no_dust_box
+          - dps_val: 262144
+            value: dustbox_fullout
+          - dps_val: 524288
+            value: trapped
+          - dps_val: 1048576
+            value: pick_up
+          - dps_val: 2097152
+            value: do_not_disturb
+          - dps_val: 4194304
+            value: water_box_empty
+          - dps_val: 8388608
+            value: forbid_area
+          - dps_val: 16777216
+            value: land_check
+          - dps_val: 33554432
+            value: findcharge_fail
+          - dps_val: 67108864
+            value: battery_err
+          - dps_val: 134217728
+            value: kit_wheel
+          - dps_val: 268435456
+            value: kit_lidar
+          - dps_val: 536870912
+            value: kit_water_pump
+      - id: 32
+        type: string
+        optional: true
+        name: device_timer
+      - id: 33
+        type: string
+        optional: true
+        name: disturb_time_set
+      - id: 34
+        type: string
+        optional: true
+        name: device_info
+        sensitive: true
+      - id: 35
+        type: string
+        optional: true
+        name: voice_data
+
+  - entity: switch
+    name: Charge
+    icon: "mdi:battery-charging"
+    category: config
+    dps:
+      - id: 3
+        type: boolean
+        optional: true
+        name: switch
+  - entity: sensor
+    name: Cleaning time
+    icon: "mdi:progress-clock"
+    class: duration
+    category: diagnostic
+    dps:
+      - id: 6
+        type: integer
+        name: sensor
+        unit: min
+  - entity: sensor
+    name: Cleaning area
+    class: area
+    category: diagnostic
+    dps:
+      - id: 7
+        type: integer
+        name: sensor
+        unit: m2
+  - entity: sensor
+    class: battery
+    dps:
+      - id: 8
+        type: integer
+        name: sensor
+        unit: "%"
+        class: measurement
+  - entity: select
+    translation_key: mopping
+    category: config
+    dps:
+      - id: 10
+        type: string
+        name: option
+        mapping:
+          - dps_val: closed
+            value: "off"
+          - dps_val: close
+            value: "off"
+          - dps_val: low
+            value: low
+          - dps_val: middle
+            value: medium
+          - dps_val: high
+            value: high
+  - entity: select
+    name: Fetch request
+    icon: "mdi:message-question"
+    category: config
+    dps:
+      - id: 16
+        type: string
+        optional: true
+        name: option
+        mapping:
+          - dps_val: get_map
+            value: Map
+          - dps_val: get_path
+            value: Path
+          - dps_val: get_both
+            value: Both
+  - entity: sensor
+    name: Edge brush lifetime
+    category: diagnostic
+    class: duration
+    dps:
+      - id: 17
+        type: integer
+        name: sensor
+        unit: min
+  - entity: sensor
+    name: Rolling brush lifetime
+    category: diagnostic
+    class: duration
+    dps:
+      - id: 19
+        type: integer
+        name: sensor
+        unit: min
+  - entity: sensor
+    translation_key: filter_life
+    category: diagnostic
+    class: duration
+    dps:
+      - id: 21
+        type: integer
+        name: sensor
+        unit: min
+  - entity: sensor
+    name: Rag lifetime
+    category: diagnostic
+    class: duration
+    dps:
+      - id: 23
+        type: integer
+        name: sensor
+        unit: min
+        optional: true
+  - entity: number
+    translation_key: volume
+    category: config
+    dps:
+      - id: 26
+        type: integer
+        name: value
+        optional: true
+        unit: "%"
+        range:
+          min: 0
+          max: 100
+  - entity: sensor
+    name: Total cleaning area
+    class: area
+    category: diagnostic
+    dps:
+      - id: 29
+        type: integer
+        name: sensor
+        unit: m2
+  - entity: sensor
+    name: Total cleaning times
+    icon: "mdi:counter"
+    category: diagnostic
+    dps:
+      - id: 30
+        type: integer
+        name: sensor
+  - entity: sensor
+    name: Total cleaning time
+    class: duration
+    icon: "mdi:history"
+    category: diagnostic
+    dps:
+      - id: 31
+        type: integer
+        name: sensor
+        unit: min
+
+  - entity: button
+    name: Reset map
+    icon: "mdi:map-marker-remove"
+    category: config
+    dps:
+      - id: 13
+        type: boolean
+        name: button
+        optional: true
+  - entity: button
+    name: Reset edge brush
+    class: restart
+    category: config
+    dps:
+      - id: 18
+        type: boolean
+        name: button
+        optional: true
+  - entity: button
+    name: Reset roll brush
+    class: restart
+    category: config
+    dps:
+      - id: 20
+        type: boolean
+        name: button
+        optional: true
+  - entity: button
+    name: Reset filter
+    icon: "mdi:air-filter"
+    category: config
+    dps:
+      - id: 22
+        type: boolean
+        name: button
+        optional: true
+  - entity: button
+    name: Reset rag life
+    category: config
+    dps:
+      - id: 24
+        type: boolean
+        name: button
+        optional: true
+  - entity: switch
+    translation_key: do_not_disturb
+    category: config
+    dps:
+      - id: 25
+        type: boolean
+        optional: true
+        name: switch
+
+  - entity: switch
+    name: Total Surface
+    icon: "mdi:clock-star-four-points"
+    category: config
+    dps:
+      - id: 27
+        type: boolean
+        name: switch
+
+  - entity: select
+    translation_key: language
+    category: config
+    dps:
+      - id: 36
+        type: string
+        optional: true
+        name: option
+        mapping:
+          - dps_val: chinese_simplified
+            value: chinese
+          - dps_val: chinese_traditional
+            value: chinese_traditional
+          - dps_val: english
+            value: english
+          - dps_val: german
+            value: german
+          - dps_val: french
+            value: french
+          - dps_val: russian
+            value: russian
+          - dps_val: spanish
+            value: spanish
+          - dps_val: korean
+            value: korean
+          - dps_val: latin
+            value: latin
+          - dps_val: portuguese
+            value: portuguese
+          - dps_val: japanese
+            value: japanese
+          - dps_val: italian
+            value: italian
+          - dps_val: polish
+            value: polish
+            
+  - entity: select
+    name: Frecuencia de autovaciado
+    icon: "mdi:delete-sweep"
+    category: config
+    dps:
+      - id: 37
+        type: integer
+        name: option
+        mapping:
+          - dps_val: 1
+            value: "Cada limpieza"
+          - dps_val: 2
+            value: "Cada 2 limpiezas"
+          - dps_val: 3
+            value: "Cada 3 limpiezas"
+          - dps_val: 4
+            value: "Cada 4 limpiezas"
+
+  - entity: switch
+    name: Autovaciado
+    icon: "mdi:delete-sweep"
+    category: config
+    dps:
+      - id: 38
+        type: boolean
+        name: switch
+
+  - entity: switch
+    name: Custom room
+    icon: "mdi:floor-plan"
+    category: config
+    dps:
+      - id: 39
+        type: boolean
+        optional: true
+        name: switch
+        
+  - entity: sensor
+    name: Estado de la mopa
+    class: enum
+    icon: "mdi:mop"
+    category: diagnostic
+    dps:
+      - id: 40
+        type: string
+        name: sensor
+        mapping:
+          - dps_val: installed
+            value: "Instalada"
+          - dps_val: uninstalled
+            value: "No instalada"
+          - value: "No instalada"
+          
+  - entity: select
+    translation_key: cleaning_mode
+    category: config
+    dps:
+      - id: 41
+        type: string
+        optional: true
+        name: option
+        mapping:
+          - dps_val: only_sweep
+            value: sweep
+          - dps_val: only_mop
+            value: mop
+          - dps_val: both_work
+            value: sweep_and_mop
+
+  - entity: sensor
+    name: Lista de habitaciones
+    icon: "mdi:home-export-outline"
+    category: diagnostic
+    dps:
+      - id: 42
+        type: string
+        name: sensor
+        optional: true
+
+  - entity: sensor
+    name: Coordenadas del mapa
+    icon: "mdi:map-marker-path"
+    category: diagnostic
+    dps:
+      - id: 43
+        type: string
+        name: sensor
+        optional: true
+
+  - entity: select
+    name: Modo de evitación de obstáculos
+    icon: "mdi:eye-outline"
+    category: config
+    dps:
+      - id: 44
+        type: string
+        name: option
+        mapping:
+          - dps_val: adaptive
+            value: "Adaptativo"
+          - dps_val: evade
+            value: "Evitación activa"
+
+  - entity: switch
+    name: Auto boost
+    icon: "mdi:car-turbocharger"
+    category: config
+    dps:
+      - id: 45
+        type: boolean
+        optional: true
+        name: switch
+
+  - entity: switch
+    name: Modo alfombras / Detección inteligente
+    icon: "mdi:rug"
+    category: config
+    dps:
+      - id: 47
+        type: boolean
+        name: switch
+        optional: true
+
+  - entity: sensor
+    name: Velocidad de navegación o motor auxiliar
+    icon: "mdi:speedometer"
+    category: diagnostic
+    dps:
+      - id: 53
+        type: string
+        name: sensor
+        optional: true
+
+  - entity: switch
+    name: Limpieza profunda (Edge/Corner)
+    icon: "mdi:vacuum"
+    category: config
+    dps:
+      - id: 101
+        type: boolean
+        name: switch
+
+  - entity: binary_sensor
+    name: Estado del depósito de agua / suciedad avanzado
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 104
+        type: boolean
+        name: sensor
+        optional: true
+
+  - entity: select
+    name: Modo de limpieza avanzado
+    icon: "mdi:robot-vacuum"
+    category: config
+    dps:
+      - id: 105
+        type: string
+        name: option
+        mapping:
+          - dps_val: auto
+            value: "Automático"
+          - dps_val: spiral
+            value: "Espiral"
+          - dps_val: spiral_square
+            value: "Espiral cuadrada"
+          - dps_val: acrubbing
+            value: "Fregado A-scrubbing"
+          - dps_val: clean_thoroughly
+            value: "Limpieza profunda"
+
+  - entity: switch
+    name: Sonido del dispositivo
+    category: config
+    icon: "mdi:volume-high"
+    dps:
+      - id: 108
+        type: boolean
+        name: switch
+
+  - entity: switch
+    name: Modo Juego Conga
+    icon: "mdi:controller-classic"
+    category: config
+    dps:
+      - id: 120
+        type: string
+        optional: true
+        name: switch
+        mapping:
+          - dps_val: allow_play
+            value: true
+          - dps_val: forbid_play
+            value: false
+
+  - entity: sensor
+    name: Registro de eventos de sistema
+    icon: "mdi:note-text-outline"
+    category: diagnostic
+    dps:
+      - id: 128
+        type: string
+        name: sensor
+        optional: true
+
+  - entity: binary_sensor
+    name: Estado de carga o acoplamiento auxiliar
+    category: diagnostic
+    dps:
+      - id: 146
+        type: boolean
+        name: sensor
+        optional: true
+
+  - entity: binary_sensor
+    class: connectivity
+    category: diagnostic
+    dps:
+      - id: 28
+        type: bitfield
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - dps_val: 2097152
+          - dps_val: null
+            value: false
+          - dps_mask: 2097152
+            value: false
+          - value: true
+      - id: 28
+        type: bitfield
+        name: fault_code
+      - id: 28
+        type: bitfield
+        name: description
+        mapping:
+          - dps_val: 0
+            value: OK
+          - dps_val: 1
+            value: low_power
+          - dps_val: 2
+            value: poweroff
+          - dps_val: 4
+            value: wheel_trap
+          - dps_val: 8
+            value: cannot_upgrade
+          - dps_val: 16
+            value: collision_stuck
+          - dps_val: 32
+            value: dust_station_full
+          - dps_val: 64
+            value: tile_error
+          - dps_val: 128
+            value: lidar_speed_err
+          - dps_val: 256
+            value: lidar_cover
+          - dps_val: 512
+            value: lidar_point_err
+          - dps_val: 1024
+            value: front_wall_dirty
+          - dps_val: 2048
+            value: psd_dirty
+          - dps_val: 4096
+            value: middle_sweep
+          - dps_val: 8192
+            value: side_sweep
+          - dps_val: 16384
+            value: fan_speed
+          - dps_val: 32768
+            value: dustbox_out
+          - dps_val: 65536
+            value: dustbox_full
+          - dps_val: 131072
+            value: no_dust_box
+          - dps_val: 262144
+            value: dustbox_fullout
+          - dps_val: 524288
+            value: trapped
+          - dps_val: 1048576
+            value: pick_up
+          - dps_val: 2097152
+            value: do_not_disturb
+          - dps_val: 4194304
+            value: water_box_empty
+          - dps_val: 8388608
+            value: forbid_area
+          - dps_val: 16777216
+            value: land_check
+          - dps_val: 33554432
+            value: findcharge_fail
+          - dps_val: 67108864
+            value: battery_err
+          - dps_val: 134217728
+            value: kit_wheel
+          - dps_val: 268435456
+            value: kit_lidar
+          - dps_val: 536870912
+            value: kit_water_pump
+
+  - entity: text
+    name: Command buffer
+    category: config
+    icon: "mdi:console-line"
+    hidden: true
+    dps:
+      - id: 15
+        type: base64
+        name: value
+        optional: true
+
+  # --- Datos crudos para investigar posición/ruta (solo lectura) ---------
+  # El estado es el DP 5 tal cual lo envía el robot; el resto son atributos.
+  # Los DP 42, 43, 53 y 128 solo existen en local (no están en la
+  # especificación de Tuya IoT).
+  - entity: sensor
+    name: Conga datos crudos
+    icon: "mdi:code-json"
+    category: diagnostic
+    dps:
+      - id: 5
+        type: string
+        name: sensor
+      - id: 4
+        type: string
+        optional: true
+        name: dp_4_mode
+      - id: 14
+        type: string
+        optional: true
+        name: dp_14_path_data
+      - id: 15
+        type: string
+        optional: true
+        name: dp_15_command_trans
+      - id: 42
+        type: string
+        optional: true
+        name: dp_42
+      - id: 43
+        type: string
+        optional: true
+        name: dp_43
+      - id: 53
+        type: string
+        optional: true
+        name: dp_53
+      - id: 128
+        type: string
+        optional: true
+        name: dp_128
+
+  # --- Limpiar habitación (EXPERIMENTAL) -------------------------------------
+  # Escribe en el DP 15 la trama "limpieza por habitaciones" (comando 0x14) de
+  # Tuya. Probado a mano con la Cocina: el robot va directo a esa habitación.
+  # El resto de tramas usan el mismo formato y no están probadas.
+  # Ojo: el robot empieza a limpiar nada más recibirla, sin comprobar su estado.
+  - entity: select
+    name: Limpiar habitación
+    icon: "mdi:robot-vacuum"
+    dps:
+      - id: 15
+        type: base64
+        name: option
+        persist: false
+        mapping:
+          - dps_val: "qgEAAAAEFAEBBx0="
+            value: "Cocina"
+          - dps_val: "qgEAAAAEFAIBBx4="
+            value: "Cocina (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBBBo="
+            value: "Salón"
+          - dps_val: "qgEAAAAEFAIBBBs="
+            value: "Salón (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBAxk="
+            value: "Pasillo"
+          - dps_val: "qgEAAAAEFAIBAxo="
+            value: "Pasillo (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBBhw="
+            value: "Baño"
+          - dps_val: "qgEAAAAEFAIBBh0="
+            value: "Baño (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBARc="
+            value: "Habitación"
+          - dps_val: "qgEAAAAEFAIBARg="
+            value: "Habitación (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBCB4="
+            value: "Estudio (sótano)"
+          - dps_val: "qgEAAAAEFAIBCB8="
+            value: "Estudio (sótano) (2 pasadas)"
+          - dps_val: "qgEAAAAEFAEBAhg="
+            value: "Entrada"
+          - dps_val: "qgEAAAAEFAIBAhk="
+            value: "Entrada (2 pasadas)"
+          - dps_val: "qgEAAAAJFAEGBwQDBgEIOA=="
+            value: "Plan completo (tu plan)"
+          - dps_val: "qgEAAAAJFAIGBwQDBgEIOQ=="
+            value: "Plan completo (tu plan) (2 pasadas)"
