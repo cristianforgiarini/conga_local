@@ -2,7 +2,7 @@
     "domain": "conga_local",
     "name": "Conga local (Tuya)",
     "codeowners": [
-        "@make-all"
+        "@cristianforgiarini"
     ],
     "config_flow": true,
     "dependencies": [],
