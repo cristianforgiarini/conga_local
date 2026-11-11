@@ -11,7 +11,8 @@ la Conga incluido y el mapa como única parte que usa la nube de Tuya.
 - **Todo en local:** estado, batería, fallos, modos, selector de habitaciones y el resto de entidades
   del perfil. Se comunica con el robot por la red local, sin nube.
 - **Selector de habitaciones:** elige una habitación o tu plan completo, con una o dos pasadas,
-  desde el dashboard o una automatización.
+  desde el dashboard o una automatización. Si el robot no tiene ninguna habitación seleccionada,
+  muestra "Sin selección", que no se puede enviar.
 - **Mapa:** imagen con habitaciones, paredes, la ruta de la última limpieza y la posición final.
   Se actualiza cada hora desde la nube de Tuya.
 

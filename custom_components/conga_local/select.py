@@ -5,6 +5,7 @@ Setup for different kinds of Tuya selects
 import logging
 
 from homeassistant.components.select import SelectEntity
+from homeassistant.exceptions import HomeAssistantError
 
 from .device import TuyaLocalDevice
 from .entity import TuyaLocalEntity
@@ -12,6 +13,10 @@ from .helpers.config import async_tuya_setup_platform
 from .helpers.device_config import TuyaEntityConfig
 
 _LOGGER = logging.getLogger(__name__)
+
+# Texto que se muestra cuando el robot no tiene ninguna habitación seleccionada.
+# No es una opción que se pueda enviar al robot.
+NO_SELECTION = "Sin selección"
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -49,14 +54,23 @@ class TuyaLocalSelect(TuyaLocalEntity, SelectEntity):
     @property
     def options(self):
         "Return the list of possible options."
-        return self._option_dps.values(self._device)
+        values = list(self._option_dps.values(self._device))
+        return values + [NO_SELECTION]
 
     @property
     def current_option(self):
         "Return the currently selected option"
-        return self._option_dps.get_value(self._device)
+        value = self._option_dps.get_value(self._device)
+        if value in self._option_dps.values(self._device):
+            return value
+        # El robot informa de otra cosa (tramas de muros, zonas o sin habitación elegida)
+        return NO_SELECTION
 
     async def async_select_option(self, option):
         "Set the option"
+        if option == NO_SELECTION:
+            raise HomeAssistantError(
+                "Elige una habitación o el plan completo; 'Sin selección' no se puede enviar."
+            )
         _LOGGER.info("%s selecting option %s", self._config.config_id, option)
         await self._option_dps.async_set_value(self._device, option)
