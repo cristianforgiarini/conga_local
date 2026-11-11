@@ -550,7 +550,7 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
             log_json(dps),
         )
         _LOGGER.warning(
-            "Include the previous log messages with any new device request to https://github.com/make-all/tuya-local/issues/",
+            "Include the previous log messages with any new device request to https://github.com/cristianforgiarini/conga_local/issues/",
         )
         if type_options:
             detected = getattr(self, "_auto_detected_protocol", None)
